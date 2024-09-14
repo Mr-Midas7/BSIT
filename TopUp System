@@ -1,0 +1,327 @@
+import java.util.Scanner;
+
+class PaymentSystem {
+//OR
+    public void display() {
+        System.out.println("Select payment method");
+        System.out.println("1. Online Payment");
+        System.out.println("2. Regular Load");
+    }
+}
+
+class DisplayPaymentOptions extends PaymentSystem {
+
+   
+    public void display() {
+        System.out.println("Select payment method");
+        System.out.println("1. GCash");
+        System.out.println("2. TNT");
+    }
+}
+class Account {
+  private String email;
+	private String password;
+
+	public Account(String newEmail, String newPassword) {
+        email = newEmail;
+        password = newPassword; 
+    }
+
+	public String getEmail() {
+		return email;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+}
+//1dA
+public class TopUpSystem {
+    private static Account[] accounts = new Account[9];
+    private static int accountCount = 0; 
+    private static String[] games = new String[9];
+    private static int gameCount = 0;
+static Scanner sc = new Scanner(System.in);
+    public static void main(String[] args) {
+       
+        
+		System.out.println("\t\t>>>>>Welcome to BOBASHOP<<<<<\n");
+		System.out.println(">>>>The fastest and easiest way to buy game credits<<<<");
+		displaySignInOptions();
+		boolean run= true;
+		while (run) {
+			int option = valid("Enter Valid Number");
+			sc.nextLine();
+
+			switch (option) {
+			case 1 -> createAccount(sc);
+			case 2 -> logIn(sc);
+			case 3 -> {
+                            System.out.println(">>>Thank you for using BOBASHOP. Goodbye!<<<");
+                            run= false;
+                        }
+			case 4 -> addGame(sc);
+			default -> System.out.println(">>>Invalid option. Please try again.<<<");
+			}
+		}
+		sc.close();
+    }
+static int valid(String prompt){
+    while(true){
+        System.out.println(prompt);
+        if(sc.hasNextInt()){
+            return sc.nextInt();
+        }else{
+            System.out.println("Invalid input.");
+            sc.next();
+  
+        }
+    }
+}
+    public static void displaySignInOptions() {
+		System.out.println("1. Create Account");
+		System.out.println("2. Log In");
+		System.out.println("3. Exit");
+		System.out.println("4. Admin Options");
+	}
+
+	public static void createAccount(Scanner sc) {
+		if (accountCount >= accounts.length) {
+			System.out.println(">>>Account limit reached. Cannot create new account.<<<");
+			return;
+		}
+
+		System.out.println("Create a new account:");
+		System.out.print("Enter email: ");
+		String email = sc.nextLine();
+		System.out.print("Enter password: ");
+		String password = sc.nextLine();
+		for (int i = 0; i < accountCount; i++) {
+			if (accounts[i].getEmail().equals(email)) {
+				System.out.println("An account with this email already exists.!!!");
+				return;
+			}
+		}
+		accounts[accountCount++] = new Account(email, password);
+		System.out.println("\n>>>>Account created successfully!<<<<\n");
+		System.out.println("1. Create Account");
+		System.out.println("2. Log In");
+		System.out.println("3. Exit");
+		System.out.println("4. Admin Options");
+	}
+
+	public static void logIn(Scanner sc) {
+            char ch=0;int id=0;int Server=0;
+		System.out.println("\n>>>Log in to your account:<<<\n");
+		System.out.print("Enter email: ");
+		String email = sc.nextLine();
+		System.out.print("Enter password: ");
+		String password = sc.nextLine();
+		for (int i = 0; i < accountCount; i++) {
+			if (accounts[i].getEmail().equals(email) && accounts[i].getPassword().equals(password)) {
+				System.out.println("\n[ Logged in successfully ]\n");
+				System.out.println("\n\t\t>>>SAVE WITH BOBACASH<<<\n");
+				System.out.println("\n>>>CHOOSE A GAME YOU WANT TO TOPUP<<<\n");
+				System.out.println("1. Mobile Legends");
+				System.out.println("2. Call of Duty");
+				System.out.println("3. Minecraft");
+				System.out.println("4. Crossfire");
+				System.out.println("5. Steam");
+				System.out.println("6. Clash of Clans");
+				System.out.println("7. Genshin Impact");
+				System.out.println("8. Roblox");
+				System.out.println("9. PUBG");
+				System.out.println("10. League of Legends");
+				System.out.println("11. Valorant");
+ 				for (int j = 0; j < gameCount; j++) {
+					System.out.println((j + 12) + ". " + games[j]);
+ 				}
+				System.out.print("Enter your choice of game: ");
+				int gameChoice = valid("Enter Valid Number");
+				sc.nextLine();
+
+				switch (gameChoice) {
+				case 1:
+					displayCredit(" ");
+					break;
+				case 2:
+					displayCredit("");
+					break;
+				case 3:
+					displayCredit("");
+					break;
+				case 4:
+					displayCredit("");
+					break;
+				case 5:
+					displayCredit("");
+					break;
+				case 6:
+					displayCredit("");
+					break;
+				case 7:
+					displayCredit(" ");
+					break;
+				case 8:
+					displayCredit("");
+					break;
+				case 9:
+					displayCredit("");
+					break;
+				case 10:
+					displayCredit(" ");
+					break;
+				case 11:
+					displayCredit("");
+					break;
+					case 12:
+					displayCredit("");
+					break;
+					case 13:
+					displayCredit("");
+					break;
+					case 14:
+					displayCredit(" ");
+					case 15:
+					displayCredit(" ");
+					break;
+					case 16:
+					displayCredit(" ");
+					break;
+					case 17:
+					displayCredit(" ");
+					break;
+					case 18:
+					displayCredit(" ");
+					break;
+					case 19:
+					displayCredit(" ");
+					break;
+					case 20:
+					displayCredit(" ");
+					break;
+ 				default:
+					System.out.println("Invalid game choice. Exiting...");
+					return;
+				}
+
+				while (true) {
+					System.out.print("Enter your choice: ");
+					int creditPackageChoice = valid("Enter Valid Number");
+					sc.nextLine();
+
+					switch (creditPackageChoice) {
+					case 1 -> {
+                                            do{
+                                                System.out.println("Enter quantity of diamonds: ");
+                                                int quantity = sc.nextInt();
+                                                long round=Math.round(quantity);
+                                                
+                                                System.out.println("Enter your ID:");
+                                                id = valid("Enter Valid Number");
+                                                System.out.println("Enter your Server:");
+                                                Server = valid("Enter Valid Number");
+                                                
+                                                sc.nextLine();
+                                                double totalPrice = calculateTotalPrice(quantity, 0.5);
+                                                System.out.println("[ You have purchased " + round + " diamonds for " + totalPrice + " pesos ]");
+                                                System.out.println("TRY AGAIN,[Y][N]");
+                                                ch=sc.next().charAt(0);
+                                            }while(ch=='y'||ch=='Y');
+                                        }
+					case 2 -> {
+                                            System.out.println("Enter quantity of weeklypass: ");
+                                            int quant= sc.nextInt();
+                                            String am=" Thank you for buying";
+                                            double totalPrice1=calculateTotalPrice(quant,100);
+                                            System.out.println("Enter your ID:");
+                                            id = valid("Enter Valid Number");
+                                            System.out.println("Enter your Server:");
+                                            Server = valid("Enter Valid Number");
+                                            System.out.println("You have purchased "+ quant+ " total price of  "+totalPrice1+"\n"+am);
+                                        }
+					case 3 -> {
+                                            String amp=" Thank you for buying";
+                                            System.out.println("Enter quantity of monthlypass: ");
+                                            int qua= sc.nextInt();
+                                            double totalPrice2=calculateTotalPrice(qua,300);
+                                            System.out.println("Enter your ID:");
+                                            id = valid("Enter Valid ");
+                                            System.out.println("Enter your Server:");
+                                            Server = valid("Enter Valid ");
+                                            System.out.println("You have purchased "+ qua+ "total price of  "+totalPrice2+"\n"+amp);
+                                        }
+					default -> System.out.println("Invalid choice. Please try again.");
+					}
+
+					PaymentSystem payment = new DisplayPaymentOptions();
+        payment.display();
+					System.out.print("Enter your choice: ");
+					int paymentChoice = valid("Enter Valid Number");
+					sc.nextLine();
+
+					switch (paymentChoice) {
+					case 1 -> {
+                                            System.out.println("GCash selected.");
+                                            System.out.println("Purchase Completed");
+                                            System.out.println("Exiting...\n");
+                                            System.out.println("Do you want to top up again?\n");
+                                            displaySignInOptions();
+                                            return;
+                                        }
+					case 2 -> {
+                                            System.out.println("Load Balance");
+                                            System.out.println("Purchase Completed");
+                                            System.out.println("Exiting...\n");
+                                            System.out.println("Do you want to top up again?\n");
+                                            displaySignInOptions();
+                                            return;
+                                        }
+					default -> System.out.println("Invalid payment method. Please try again.");
+					}
+					return;
+				}
+			}
+			System.out.println("Incorrect email or password.");
+		}
+	}
+
+	public static void displayCredit(String game) {
+		System.out.println("\nAvailable credit:");
+		System.out.println("Choose Category:");
+		System.out.println("1. Diamonds");
+		System.out.println("2. Weekly diamond pass ");
+		System.out.println("3. Monthly pass ");
+	}
+//MM
+//OL
+	public static double calculateTotalPrice(int quantity, double pricePerItem) {
+		return quantity * pricePerItem;
+	}
+	public static double calculateTotalPrice(int quant, int PerItem) {
+		return quant* PerItem ;
+	}
+	public static double calculateTotalPrice(int qua, double Per,double q) {
+		return qua* Per ;
+	}
+
+
+	public static void addGame(Scanner sc) {
+    if (gameCount >= games.length) {
+        System.out.println("Game limit reached. Cannot add new game.");
+        return;
+    }
+
+    System.out.print("Enter the name of the new game: ");
+    String newGame = sc.nextLine();
+    for (int i = 0; i < gameCount; i++) {
+        if (games[i].equalsIgnoreCase(newGame)) {
+            System.out.println("This game already exists.");
+            return;
+        }
+    }
+    games[gameCount++] = newGame;
+    System.out.println("Game added successfully!");
+		displaySignInOptions();
+}
+}
