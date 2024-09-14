@@ -1,0 +1,30 @@
+public class Employee {
+
+    private int id;
+    private double salary;
+    
+    public void setid(int id){
+        this.id=id;
+}
+        int getid(){
+        return id;
+    }
+        void setsalary(double salary){
+            this.salary=salary;
+        }
+        double getsalary(){
+            return salary;
+        }
+        }
+        class Main{
+    public static void main(String[] args) {
+       Employee m=new Employee();
+  
+       m.setid(101);
+       m.setsalary(5000);
+       
+        System.out.println("the id "+m.getid());
+        System.out.println("the salary "+m.getsalary());
+    }
+    
+}
