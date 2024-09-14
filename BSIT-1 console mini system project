@@ -1,0 +1,367 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
+
+
+public class Apolona_Sombilon_IceCreamSystem {
+
+    static Scanner sc = new Scanner(System.in);
+    //list to store all orders
+    static List<Order> orders = new ArrayList<>();
+    //store all prices
+    static double[][] ORDER_PRICES = {{5.0, 3.0, 20.0}};
+    //Map to store user credentials
+    static Map<String, String> userCredentials = new HashMap<>();
+    static int nextOrderId = 1;
+    public static String htown;
+    public static String nname;
+
+    public static void main(String[] args) {
+        createUser();
+        userLogin();
+
+        while (true) {
+            displayMenu();
+            int op = validInput("Choose Option: ");
+            processOption(op);
+        }
+    }
+    //TRAP ARON D ERROR
+
+    static int validInput(String prompt) {
+        while (true) {
+            System.out.println(prompt);
+            if (sc.hasNextInt()) {
+                return sc.nextInt();
+            } else {
+                System.out.println("Invalid Input.Please Enter a NUMBER.");
+                sc.next();
+            }
+        }
+    }
+
+    public static void createUser() {
+        char ch;
+        do {
+            System.out.println("CREATE ACCOUNT");
+            System.out.println("Enter HomeTown:");
+            htown = sc.next();
+            System.out.println("Enter Nickname:");
+            nname = sc.next();
+            System.out.println("Enter Username:");
+            String name = sc.next();
+            //validate only alphabet a-z,A-Z
+            while (!name.matches("[a-zA-Z]+")) {
+                System.out.println("Invalid Username. PLEASE ENTER ONLY ALPHABET.");
+                name = sc.next();
+
+            }//make the length 6 or more
+            while (name.length() < 6) {
+                System.out.println("Username must be at least 6 characters long. Please enter again:");
+                name = sc.next();
+            }
+            System.out.println("Enter Password:");
+            String pass = sc.next();
+            while (pass.length() < 6) {
+                System.out.println("Password must be at least 6 characters long. Please enter again:");
+                pass = sc.next();
+            }
+
+            //store user create credentials
+            userCredentials.put(name, pass);
+            while (true) {
+                System.out.println("Try Again,[y][n]");
+                String input = sc.next();
+                if (input.equalsIgnoreCase("y") || input.equalsIgnoreCase("n")) {
+                    ch = input.charAt(0);
+                    break;
+                } else {
+                    System.out.println("INVALID INPUT.Please enter,[y][n] only");
+                }
+            }
+        } while (ch == 'y' || ch == 'Y');
+
+    }
+
+    public static boolean userLogin() {
+        while (true) {
+
+            System.out.println("\nUser Login");
+            System.out.println("ENTER USERNAME");
+            String name = sc.next();
+            System.out.println("ENTER PASSWORD");
+            String pass = sc.next();
+            //check if the input credentials are corrct
+            if (userCredentials.containsKey(name) && userCredentials.get(name).equals(pass)) {
+                System.out.println("Login Successfull\n");
+                System.out.println(greetUser(nname));
+                System.out.println(greetUser(nname, htown));
+                return true;
+            } else {
+                System.out.println("Invalid Credentials. Please Try Again.");
+            }
+        }
+    }
+//OVERLOADING
+
+    public static String greetUser(String nname) {
+        return "Welcome " + nname + "!";
+    }
+
+    public static String greetUser(String nname, String htown) {
+        return "You are from " + htown + "!  Enjoy " + nname + "!";
+
+    }
+
+    static void displayMenu() {
+
+        System.out.println("Menu");
+        System.out.println("1. Create New Order");
+        System.out.println("2. List of Ordered");
+        System.out.println("3. Exit");
+        System.out.println("4. remove order");
+    }
+
+    static void processOption(int op) {
+
+        switch (op) {
+            case 1 ->
+                createNewOrder();
+            case 2 ->
+                listOrdered();
+            case 3 ->
+                exitSystem();
+            case 4 ->
+                removeOrder();
+            default ->
+                System.out.println("Invalid Option.");
+        }
+    }
+
+    static void createNewOrder() {
+        Order order = new Order();
+        char ch;
+        do {
+            System.out.println("*************************************************************************************");
+            System.out.println("Enter first Name: ");
+            String first = sc.next();
+            System.out.println("Enter Last Name: ");
+            String last = sc.next();
+            String fullName = getFullName(first, last);
+            order.name = fullName;
+            System.out.println("***********************************************************");
+            while (true) {
+                System.out.println("Try Again,[y][n]");
+                String input = sc.next();
+                if (input.equalsIgnoreCase("y") || input.equalsIgnoreCase("n")) {
+                    ch = input.charAt(0);
+                    break;
+                } else {
+                    System.out.println("INVALID INPUT.Please enter,[y][n] only");
+                }
+            }
+        } while (ch == 'y' || ch == 'Y');
+        order.iceCreamSticks = 0;
+        order.ice = 0;
+        order.salt = 0;
+        order.remittance = 0; // initialize  to 0
+
+        while (true) {
+            displayOrderMenu();
+            int a = validInput("Choose Option:");
+            processOrderOption(a, order);
+            if (a == 4) {
+                break;
+            }
+        }
+        order.id = nextOrderId++;
+
+        // Add the order to the list of orders
+        orders.add(order);
+    }
+//String methods
+
+    static String getFullName(String first, String last) {
+        return first.trim().toUpperCase() + " " + last.trim().toUpperCase();
+    }
+
+    static void removeOrder() {
+        System.out.println("Enter the order ID to remove:");
+        int orderId = sc.nextInt();
+        for (int i = 0; i < orders.size(); i++) {
+            Order order = orders.get(i);
+            if (order.id == orderId) {
+                orders.remove(i);
+                System.out.println("Order removed successfully.");
+                return;
+            }
+        }
+        System.out.println("Order not found.");
+    }
+
+    static void displayOrderMenu() {
+        System.out.println("Order Menu");
+        System.out.println("1. Order Ice Cream Stick - 5.00");
+        System.out.println("2. Order Ice - 3.00");
+        System.out.println("3. Order Salt - 20.00");
+        System.out.println("4. Return to Menu ");
+    }
+
+    static void processOrderOption(int a, Order order) {
+
+        switch (a) {
+            case 1 ->
+                orderIceCreamStick(order);
+            case 2 ->
+                orderIce(order);
+            case 3 ->
+                orderSalt(order);
+            default ->
+                System.out.println("Return");
+        }
+
+    }
+
+    static void orderIceCreamStick(Order order) {
+        char ch = 0;
+        do {
+
+            System.out.println("How many Ice Cream Sticks? ");
+            String input = sc.next();
+            if (!input.matches("\\d+")) { // check if input is not a number
+                System.out.println("Invalid input. Please enter a number.");
+                continue;
+            }
+            double c = Double.parseDouble(input);
+            long round = Math.round(c);
+
+            double price = round * ORDER_PRICES[0][0];
+            order.iceCreamSticks += round;
+            order.remittance += price; // add remittance for ice cream sticks
+
+            System.out.println("You ordered " + round + "- Total:" + price + " - Remittance: " + Math.round(order.remittance) / 4 + "\n");
+
+            while (true) {
+                System.out.println("Try Again,[y][n]");
+                String inp = sc.next();
+                if (inp.equalsIgnoreCase("y") || inp.equalsIgnoreCase("n")) {
+                    ch = inp.charAt(0);
+                    break;
+                } else {
+                    System.out.println("INVALID INPUT.Please enter,[y][n] only");
+                }
+            }
+        } while (ch == 'y' || ch == 'Y');
+        System.out.println("***********************************************************");
+
+    }
+
+    static void orderIce(Order order) {
+        char ch = 0;
+        do {
+            System.out.println("How many Ice ? ");
+            String input = sc.next();
+            if (!input.matches("\\d+")) { // check if input is not a number
+                System.out.println("Invalid input. Please enter a number.");
+                continue;
+            }
+            double d = Double.parseDouble(input);
+            long round = Math.round(d);
+
+            double price = round * ORDER_PRICES[0][1];
+            order.ice += round;
+
+            System.out.println("You ordered " + round + " total " + price);
+
+            while (true) {
+                System.out.println("Try Again,[y][n]");
+                String inp = sc.next();
+                if (inp.equalsIgnoreCase("y") || inp.equalsIgnoreCase("n")) {
+                    ch = inp.charAt(0);
+                    break;
+                } else {
+                    System.out.println("INVALID INPUT.Please enter,[y][n] only");
+                }
+
+            }
+        } while (ch == 'y' || ch == 'Y');
+        System.out.println("***********************************************************");
+    }
+
+    static void orderSalt(Order order) {
+        char ch = 0;
+        do {
+            System.out.println("How many salt ? ");
+            String input = sc.next();
+            if (!input.matches("\\d+")) { // check if input is not a number
+                System.out.println("INVALID INPUT. Please Enter a Number.");
+                continue;
+            }
+            double e = Double.parseDouble(input);
+            long round = Math.round(e);
+
+            double price = round * ORDER_PRICES[0][2];
+            order.salt += round;
+
+            System.out.println("You ordered " + round + " total " + price);
+
+            while (true) {
+                System.out.println("Try Again,[y][n]");
+                String inp = sc.next();
+                if (inp.equalsIgnoreCase("y") || inp.equalsIgnoreCase("n")) {
+                    ch = inp.charAt(0);
+                    break;
+                } else {
+                    System.out.println("INVALID INPUT.Please enter,[y][n] only");
+                }
+            }
+        } while (ch == 'Y' || ch == 'y');
+        System.out.println("***********************************************************");
+    }
+//list all orders
+
+    static void listOrdered() {
+        for (Order order : orders) {
+            System.out.println(order.toString());
+        }
+    }
+
+    static void exitSystem() {
+        System.out.println("Thank you God BLESS");
+        System.exit(0);
+    }
+}
+
+class Order {
+
+    public String name;
+    public int id;
+    public int iceCreamSticks;
+    public int ice;
+    public int salt;
+    public double remittance;
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public double totalPrice() {
+        return (iceCreamSticks * 5) / 4 + ice * 3 + salt * 20;
+    }
+
+    @Override
+    public String toString() {
+        return """
+               -------------------------------------------------------------------------------
+               Order #""" + id + "\n" + """
+               name='""" + name + '\'' + "\n"
+                + "iceCreamSticks ordered=" + iceCreamSticks + "|total=" + iceCreamSticks * 5 + "\n"
+                + "ice ordered=" + ice + "|total= " + ice * 3 + "\n"
+                + "salt ordered=" + salt + "|total=" + salt * 20 + "\n"
+                + "remittance=" + Math.round(remittance) / 4
+                + "\n total:" + totalPrice()
+                + "\n" + "---------------------------------------------------------------------------\n";
+    }
+}
